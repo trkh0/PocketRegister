@@ -22,8 +22,8 @@
             </div>
             {:else}
             <div class="dropdown dropdown-end">
-                <form action="/logout" method="POST">
-                    <button class="btn btn-secondary">Logout</button>
+                <form action="/cart">
+                    <button class="btn btn-ascent">Cart</button>
                 </form>
             </div>
             {/if}
@@ -34,5 +34,5 @@
             <slot />
         </div>
     </div>
-    
+  
 </div>

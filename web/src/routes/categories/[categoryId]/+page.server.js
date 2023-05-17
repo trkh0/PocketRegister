@@ -6,6 +6,7 @@ export const load = ({locals, params}) => {
         throw error(401, 'Unathorized!');
     }
 
+
     const getCategoryItems = async (categoryName) => {
         try {
             const categoryId = serializeNonPOJs(await locals.pb.collection('categories').getFullList(undefined, {
@@ -22,6 +23,7 @@ export const load = ({locals, params}) => {
     }
 
     return {
-        categoryItems: getCategoryItems(params.categoryId)
+        categoryItems: getCategoryItems(params.categoryId),
+        category_title: params.categoryId
     }
 }
