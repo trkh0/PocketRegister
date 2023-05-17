@@ -6,9 +6,15 @@
 <div class="min-h-full">
 
     <nav class="navbar bg-base-100 border-b">
+        {#if !data.user}
         <div class="flex-1">
             <a href="/" class="btn btn-ghost normal-case text-xl">PocketRegister</a>
         </div>
+        {:else}
+        <div class="flex-1">
+            <a href="/" class="btn btn-ghost normal-case text-xl">{data.user.name}</a>
+        </div>
+        {/if}
         <div class="flex-none">
             {#if !data.user}
             <div class="dropdown dropdown-end">
@@ -19,7 +25,6 @@
                 <form action="/logout" method="POST">
                     <button class="btn btn-secondary">Logout</button>
                 </form>
-                <!-- <a href="/" class="btn btn-ghost">{$event.locals.pb.authStore.model.username}</a> -->
             </div>
             {/if}
         </div>

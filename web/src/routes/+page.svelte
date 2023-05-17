@@ -1,2 +1,10 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    export let data;
+</script>
+
+<h1>Welcome to PocketRegister</h1>
+{#if data.user}
+    <form action="/categories">
+        <button class="btn btn-primary">Products</button>
+    </form>
+{/if}
