@@ -8,8 +8,8 @@
     <h2>Nothing here!</h2>
 {:else}
 	{#each data.categories as category}
-	<a href="/categories/{category.category_name}">
-		<CategoryItem category_name = {category.category_name} category_group = {category.group} />
+		<a href="/categories/{category.id}">
+			<CategoryItem category_name = {category.category_name} category_group = {category.group} />
 		</a>
 	{/each}
 {/if}

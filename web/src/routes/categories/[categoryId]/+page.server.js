@@ -1,19 +1,19 @@
 import { serializeNonPOJs } from '$lib/utils'
 import { error } from '@sveltejs/kit'
 
-export const load = ({locals, params}) => {
+export const load = async ({locals, params}) => {
     if (!locals.pb.authStore.isValid) {
         throw error(401, 'Unathorized!');
     }
 
+    const category = serializeNonPOJs(await locals.pb.collection('categories').getFullList(undefined, {
+        filter: `id = "${params.categoryId}"`,
+    }))
 
-    const getCategoryItems = async (categoryName) => {
+    const getCategoryItems = async () => {
         try {
-            const categoryId = serializeNonPOJs(await locals.pb.collection('categories').getFullList(undefined, {
-                filter: `category_name = "${categoryName}"`,
-            }))
             const categoryItems = serializeNonPOJs(await locals.pb.collection('products').getFullList(undefined, {
-                filter: `category = "${categoryId[0].id}"`,
+                filter: `category = "${category[0].id}"`,
             }));
             return categoryItems
         } catch (err) {
@@ -21,9 +21,13 @@ export const load = ({locals, params}) => {
             throw error(err.status, err.message)
         }
     }
+    const getCategoryName = async () => {
+        return category[0].category_name
+    }
 
     return {
-        categoryItems: getCategoryItems(params.categoryId),
-        category_title: params.categoryId
+        categoryItems: getCategoryItems(),
+        category_id: params.categoryId,
+        category_title: getCategoryName()
     }
 }

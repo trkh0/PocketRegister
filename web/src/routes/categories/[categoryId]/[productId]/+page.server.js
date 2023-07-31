@@ -1,30 +1,27 @@
 import {error, redirect} from "@sveltejs/kit"
-import { product_quantity } from '$lib/stores.js'
-import { onDestroy } from 'svelte'
+import { serializeNonPOJs } from '$lib/utils'
 
-
-let quantity;
-
-const unsubscribe = product_quantity.subscribe(value => {
-    quantity = value
-    console.log(quantity)
-});
-
-onDestroy(unsubscribe);
-
-export const load = ({locals, params}) => {
+export const load = async ({locals, params}) => {
     if (!locals.pb.authStore.isValid) {
         throw error(401, 'Unathorized!');
     }
+
+    const product = serializeNonPOJs(await locals.pb.collection('products').getFullList(undefined, {
+        filter: `id = "${params.productId}"`,
+    }))
+
     return {
-        title: params.productId
+        title: params.productId,
+        product_name: product[0].product_name
     }
 }
 
 
 export const actions = {
-    addItem: async ({locals, request, params}) => {
-        console.log(`${quantity} x ${params.productId}`)
+    addItem: async ({request, params}) => {
+        const formData = Object.fromEntries(await request.formData())
+        console.log(`${formData.quantity} x ${params.productId}`)
+
         throw redirect(303, '/categories')
     }
 }
