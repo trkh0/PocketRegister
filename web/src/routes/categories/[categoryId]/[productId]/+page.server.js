@@ -18,10 +18,19 @@ export const load = async ({locals, params}) => {
 
 
 export const actions = {
-    addItem: async ({request, params}) => {
+    addItem: async ({request, params, locals}) => {
         const formData = Object.fromEntries(await request.formData())
-        console.log(`${formData.quantity} x ${params.productId}`)
-
+        const data = {
+            user: locals.user.id,
+            product: params.productId,
+            number_item: formData.quantity
+        }
+        try {
+            await locals.pb.collection('cart').create(data)
+        } catch (err) {
+            console.log(err)
+            throw error(err.status, err.message)
+        }
         throw redirect(303, '/categories')
     }
 }
