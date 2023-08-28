@@ -26,7 +26,18 @@ export const actions = {
             number_item: formData.quantity
         }
         try {
-            await locals.pb.collection('cart').create(data)
+            const itemInCart = await locals.pb.collection('cart').getList(1, 1, {
+                filter: `user.id = "${data.user}" && product.id = "${data.product}"`,
+            });
+            // if the item is already in the cart, increase the quantity of that item, if not add as a new item to the cart
+            if (itemInCart.items[0] == undefined){
+                await locals.pb.collection('cart').create(data)
+            } else {
+                const newQuantity = {
+                    number_item : parseInt(itemInCart.items[0].number_item) + parseInt(data.number_item)
+                }
+               await locals.pb.collection('cart').update(itemInCart.items[0].id, newQuantity) 
+            }
         } catch (err) {
             console.log(err)
             throw error(err.status, err.message)
