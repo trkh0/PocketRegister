@@ -8,7 +8,7 @@
     <nav class="navbar bg-base-100 border-b">
         {#if !data.user}
         <div class="flex-1">
-            <a href="/" class="btn btn-ghost normal-case text-xl">PocketRegister</a>
+            <a href="/login" class="btn btn-ghost normal-case text-xl">Pocket POS</a>
         </div>
         {:else}
         <div class="flex-1">
@@ -23,7 +23,7 @@
             {:else}
             <div class="dropdown dropdown-end">
                 <form action="/cart">
-                    <button class="btn btn-ascent">Cart</button>
+                    <button class="btn btn-ascent btn-outline">Cart</button>
                 </form>
             </div>
             {/if}
